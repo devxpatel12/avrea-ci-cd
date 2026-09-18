@@ -57,7 +57,7 @@ export default function DashboardPage() {
 
       <section>
         <SectionHeading
-          title="Build metrics"
+          title="Build metric"
           description="High-level signals that help explain where CI time usually goes."
         />
         <BuildMetrics metrics={buildMetrics} />
