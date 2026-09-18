@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CI Performance Lab
 
-## Getting Started
+## Project Overview
 
-First, run the development server:
+This repository is a demo Next.js application used to benchmark GitHub Actions CI performance.
+
+It is intentionally simple as a product, but includes enough TypeScript, linting, unit tests, and a production build to create a realistic CI workload. The same workflow can be compared across runners by changing only the `runs-on` value.
+
+The dashboard UI shows static demo timings so the app stays stable. Real performance comparisons should come from GitHub Actions step durations.
+
+## Local Setup
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Run Checks
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run typecheck
+npm run lint
+npm test
+npm run build
+```
 
-## Learn More
+Optional:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## App Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `/` — CI Performance Lab dashboard
+- `/about` — short explanations of CI, GitHub Actions, runners, installs, builds, and caching
 
-## Deploy on Vercel
+## GitHub Actions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The workflow lives at `.github/workflows/ci.yml`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+It runs on:
+
+- pushes to `main`
+- pull requests
+
+The job uses:
+
+```yaml
+runs-on: ubuntu-latest
+```
+
+Each CI stage is a separate step so GitHub Actions shows individual timings:
+
+1. Checkout
+2. Setup Node.js
+3. Install dependencies
+4. Type check
+5. Lint
+6. Tests
+7. Build
+
+`actions/setup-node` is configured with `cache: npm` for GitHub's standard npm caching.
+
+To benchmark a different runner later, change only the `runs-on` line while keeping every other step identical. Compare measured step times from the Actions UI. Do not assume one runner is faster until you record real results.
+
+## Tech Stack
+
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- ESLint
+- Vitest + Testing Library
+- Lucide React
+- npm
