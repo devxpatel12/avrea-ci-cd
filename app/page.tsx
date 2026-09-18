@@ -30,7 +30,7 @@ export default function DashboardPage() {
           {APP_DESCRIPTION}
         </p>
         <p className="mt-3 text-sm text-slate-500">
-          Durations below are static demo values so the UI stays stable. Use
+          Durations below are statics demo values so the UI stays stable. Use
           GitHub Actions step timings for real runner comparisons.
         </p>
       </section>
